@@ -15,20 +15,20 @@ app.get('/todo', (req, res) => {
 
 app.post('/todo', jsonParser, (req, res) => {
     //code to create todo here
-    let body = req.body;// how we access our body information after the parser.
+    let body = req.body;
     res.send('created a todo!');
 });
 
-app.put('/todo/:id', jsonParser, (req, res) => {
-    //code to mark todo done here
-    let body = req.body;// how we access our body information after the parser.
-    res.send('created a todo!');
+app.put('/todo', jsonParser, (req, res) => {
+    //some code to mark all selected todos as complete
+    let body = req.body;
+    res.send('deleted select todos!');
 });
 
-app.delete('/todo/:id', jsonParser, (req, res) => {
-    //some code to delete todo here
-    let body = req.body;// how we access our body information after the parser.
-    res.send('created a todo!');
+app.delete('/todo', jsonParser, (req, res) => {
+    //some code to delete all selected todos here
+    let body = req.body;
+    res.send('deleted select todos!');
 });
 
 
