@@ -28,5 +28,4 @@ app.delete('/todos', jsonParser, (req, res) => {
     res.send('deleted selected todos!');
 });
 
-
 app.listen(port);
