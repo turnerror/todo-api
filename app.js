@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 
 app.get('/todos', (req, res) => {
-    let deleted = req.query.deleted;
+    let completed = req.query.completed; //1 or 0
 
     res.send('Get all todos')
 });
