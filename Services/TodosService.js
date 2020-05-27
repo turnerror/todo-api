@@ -18,22 +18,22 @@ function idsToObjectIds(ids){
     return ids.map(id => ObjectId(id));
 }
 
-async function addTodo(db, newTask) {
+function addTodo(db, newTask) {
     let collection = db.collection('Todos');
     return collection.insertOne({"task" : newTask});
 }
 
-async function getTodos(db, completed) {
+function getTodos(db, completed) {
     let collection = db.collection('Todos');
     return collection.find({completed: {$exists: completed === '1'}, deleted: {$exists: false}}).toArray();
 }
 
-async function completeTodos(db, obj_ids) {
+function completeTodos(db, obj_ids) {
     let collection = db.collection('Todos');
     return collection.updateMany({_id: {$in: obj_ids}}, {$set: {completed: 1}});
 }
 
-async function deleteTodos(db, obj_ids) {
+function deleteTodos(db, obj_ids) {
     let collection = db.collection('Todos');
     return collection.updateMany({_id: {$in: obj_ids}}, {$set: {deleted: 1}});
 }
