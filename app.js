@@ -12,24 +12,31 @@ var jsonParser = bodyParser.json();
 const Client = new MongoClient('mongodb://localhost:27017', {useNewUrlParser: true, useUnifiedTopology: true});
 
 app.get('/todos', async (req, res) => {
-    let completed = req.query.completed;
+    const completed = req.query.completed;
+    if (completed && completed !== '1'){
+        return res.status(400).send('Bad Request');
+    }
     await Client.connect();
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.find({completed: {$exists: completed === '1'}, deleted: {$exists: false}}).toArray();
+    let data = await collection.find({completed: completed}, {deleted: {$exists: false}}).toArray();
 
-    res.json({success: true, data: result});
+    res.json({success: data.length > 0, data: data});
 });
 
 app.post('/todos', jsonParser, async (req, res) => {
     let body = req.body;
+    if (!body.task){
+        return res.status(400).send('Bad Request');
+    }
+
     await Client.connect();
 
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.insertOne({task: body.task});
+    let query = await collection.insertOne({task: body.task});
 
-    res.json({success: true});
+    res.json({success: query.insertedCount === 1 });
 });
 
 app.put('/todos', jsonParser, async (req, res) => {
@@ -44,9 +51,9 @@ app.put('/todos', jsonParser, async (req, res) => {
 
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {completed: 1}});
+    let query = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {completed: 1}});
 
-    return res.json({success: true});
+    return res.json({success: query.result.n > 0});
 });
 
 app.delete('/todos', jsonParser, async (req, res) => {
@@ -61,9 +68,9 @@ app.delete('/todos', jsonParser, async (req, res) => {
 
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {deleted: 1}});
+    let query = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {deleted: 1}});
 
-    return res.json({success: true});
+    return res.json({success: query.result.n > 0});
 });
 
 app.listen(port);
