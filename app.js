@@ -36,8 +36,8 @@ app.put('/todos', jsonParser, async (req, res) => {
     await Client.connect();
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.updateMany({_id: { "$in": obj_ids }}, {$set: {completed: 1}});
-    // console.log(result);
+    let result = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {completed: 1}});
+    console.log(result);
     res.json({success: true});
 });
 
@@ -47,7 +47,7 @@ app.delete('/todos', jsonParser, async (req, res) => {
     await Client.connect();
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.updateMany({_id: { "$in": obj_ids }}, {$set: {deleted: 1}});
+    let result = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {deleted: 1}});
     console.log(result);
     res.json({success: true});
 });
