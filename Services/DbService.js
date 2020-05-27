@@ -5,9 +5,9 @@ const dbname = 'Todo';
 const Client = new MongoClient(url, { useNewUrlParser: true });
 
 async function connectToDB() {
-    let result = await Client.connect();
+    await Client.connect();
 
-    return Client.db('Todo');
+    return Client.db(dbname);
 }
 
 module.exports.connectToDB = connectToDB;

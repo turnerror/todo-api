@@ -1,5 +1,4 @@
 const ObjectId = require('mongodb').ObjectId;
-const MongoClient = require('mongodb').MongoClient;
 
 function validateIds(ids) {
     const regex = /[0-9a-f]{24}/;
