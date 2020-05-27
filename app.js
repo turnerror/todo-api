@@ -1,13 +1,23 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
+
 const app = express();
 const port = 3000;
-const bodyParser = require('body-parser');
+
 var jsonParser = bodyParser.json();
 
-app.get('/todos', (req, res) => {
-    let completed = req.query.completed; //1 or 0
+const Client = new MongoClient('mongodb://localhost:27017', {useNewUrlParser: true, useUnifiedTopology: true});
 
-    res.send('Get all todos')
+app.get('/todos', async (req, res) => {
+    let completed = req.query.completed;
+    await Client.connect();
+    let db = Client.db('Todo');
+    let collection = db.collection('Todos');
+    let result = await collection.find({"completed": completed, "deleted": 0}).toArray();
+    console.log(result);
+    res.json({success: true, data: result});
 });
 
 app.post('/todos', jsonParser, (req, res) => {
