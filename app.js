@@ -7,7 +7,6 @@ const port = 3000;
 
 var jsonParser = bodyParser.json();
 
-
 app.get('/todos', TodosController.getTodos);
 
 app.post('/todos', jsonParser, TodosController.postTodos);
