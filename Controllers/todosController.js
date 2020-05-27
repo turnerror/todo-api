@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
-const BodyValidation = require('./validation');
+const TodosService = require('../Services/TodosService');
 const Client = new MongoClient('mongodb://localhost:27017', {useNewUrlParser: true, useUnifiedTopology: true});
 
 async function getTodos(req, res) {
@@ -33,8 +33,7 @@ async function postTodos(req, res) {
 
 async function putTodos(req, res) {
     const body = req.body;
-    const validation = new BodyValidation();
-    if (!validation.validateIds(body.ids)) {
+    if (!TodosService.validateIds(body.ids)) {
         return res.status(400).send('Bad Request');
     }
 
@@ -50,8 +49,7 @@ async function putTodos(req, res) {
 
 async function deleteTodos(req, res) {
     const body = req.body;
-    const validation = new BodyValidation();
-    if (!validation.validateIds(body.ids)) {
+    if (!TodosService.validateIds(body.ids)) {
         return res.status(400).send('Bad Request');
     }
 
