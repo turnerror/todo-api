@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
+const BodyValidation = require('./modules/validation');
 
 const app = express();
 const port = 3000;
@@ -33,6 +34,11 @@ app.post('/todos', jsonParser, async (req, res) => {
 
 app.put('/todos', jsonParser, async (req, res) => {
     const body = req.body;
+    const validation = new BodyValidation();
+    if (!validation.validateIds(body.ids)){
+        return res.status(400).send('Bad Request');
+    }
+
     const obj_ids = body.ids.map(id => ObjectId(id));
     await Client.connect();
 
@@ -40,11 +46,16 @@ app.put('/todos', jsonParser, async (req, res) => {
     let collection = db.collection('Todos');
     let result = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {completed: 1}});
 
-    res.json({success: true});
+    return res.json({success: true});
 });
 
 app.delete('/todos', jsonParser, async (req, res) => {
     const body = req.body;
+    const validation = new BodyValidation();
+    if (!validation.validateIds(body.ids)){
+        return res.status(400).send('Bad Request');
+    }
+
     const obj_ids = body.ids.map(id => ObjectId(id));
     await Client.connect();
 
@@ -52,7 +63,7 @@ app.delete('/todos', jsonParser, async (req, res) => {
     let collection = db.collection('Todos');
     let result = await collection.updateMany({_id: { $in: obj_ids }}, {$set: {deleted: 1}});
 
-    res.json({success: true});
+    return res.json({success: true});
 });
 
 app.listen(port);
