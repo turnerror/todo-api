@@ -1,5 +1,5 @@
 const bodyParser = require('body-parser');
-const TodosController = require('../Controllers/todosController');
+const TodosController = require('../Controllers/TodosController');
 
 var jsonParser = bodyParser.json();
 
