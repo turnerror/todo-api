@@ -15,18 +15,22 @@ app.get('/todos', async (req, res) => {
     await Client.connect();
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.find({"completed": completed, "deleted": 0}).toArray();
+    let result = await collection.find({completed: {$exists: completed == 1}}).toArray();
     console.log(result);
     res.json({success: true, data: result});
 });
 
-app.post('/todos', jsonParser, (req, res) => {
-    //code to create todo here
+app.post('/todos', jsonParser, async (req, res) => {
     let body = req.body;
-    res.send('created a todo!');
+    await Client.connect();
+    let db = Client.db('Todo');
+    let collection = db.collection('Todos');
+    let result = await collection.insertOne({task: body.task});
+    console.log(result);
+    res.json({success: true});
 });
 
-app.put('/todos', jsonParser, (req, res) => {
+app.put('/todos', jsonParser, async (req, res) => {
     //some code to mark all selected todos as complete
     let body = req.body;
     res.send('updated selected todos!');
