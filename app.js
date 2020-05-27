@@ -15,7 +15,7 @@ app.get('/todos', async (req, res) => {
     await Client.connect();
     let db = Client.db('Todo');
     let collection = db.collection('Todos');
-    let result = await collection.find({completed: {$exists: completed == 1}}).toArray();
+    let result = await collection.find({completed: {$exists: completed === '1'}, deleted: {$exists: false}}).toArray();
     console.log(result);
     res.json({success: true, data: result});
 });
@@ -31,15 +31,23 @@ app.post('/todos', jsonParser, async (req, res) => {
 });
 
 app.put('/todos', jsonParser, async (req, res) => {
-    //some code to mark all selected todos as complete
     let body = req.body;
-    res.send('updated selected todos!');
+    await Client.connect();
+    let db = Client.db('Todo');
+    let collection = db.collection('Todos');
+    let result = await collection.updateOne({_id: ObjectId(body.id)}, {$set: {completed: 1}});
+    console.log(result);
+    res.json({success: true});
 });
 
-app.delete('/todos', jsonParser, (req, res) => {
-    //some code to delete all selected todos here
+app.delete('/todos', jsonParser, async (req, res) => {
     let body = req.body;
-    res.send('deleted selected todos!');
+    await Client.connect();
+    let db = Client.db('Todo');
+    let collection = db.collection('Todos');
+    let result = await collection.updateOne({_id: ObjectId(body.id)}, {$set: {deleted: 1}});
+    console.log(result);
+    res.json({success: true});
 });
 
 app.listen(port);
