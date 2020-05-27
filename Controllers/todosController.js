@@ -13,7 +13,7 @@ async function getTodos(req, res) {
     let collection = db.collection('Todos');
     let data = await collection.find({completed: {$exists: completed === '1'}, deleted: {$exists: false}}).toArray();
 
-    res.json({success: data.length > 0, data: data});
+    return res.json({success: data.length > 0, data: data});
 }
 
 async function postTodos(req, res) {
@@ -28,7 +28,7 @@ async function postTodos(req, res) {
     let collection = db.collection('Todos');
     let query = await collection.insertOne({task: body.task});
 
-    res.json({success: query.insertedCount === 1});
+    return res.json({success: query.insertedCount === 1});
 }
 
 async function putTodos(req, res) {
