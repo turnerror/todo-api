@@ -3,7 +3,7 @@ const TodosService = require('../Services/TodosService');
 
 async function getTodos(req, res) {
     const completed = req.query.completed;
-    if (completed && completed !== '1') {
+    if (!TodosService.validateCompletedQuery(completed)) {
         return res.status(400).send('Bad Request');
     }
 

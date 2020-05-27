@@ -14,6 +14,15 @@ function validateIds(ids) {
     return check;
 }
 
+function validateCompletedQuery(completed) {
+    let check = true;
+    if (completed && completed !== '1'){
+        check = false;
+    }
+
+    return check;
+}
+
 function idsToObjectIds(ids){
     return ids.map(id => ObjectId(id));
 }
@@ -39,6 +48,7 @@ function deleteTodos(db, obj_ids) {
 }
 
 module.exports.validateIds = validateIds;
+module.exports.validateCompletedQuery = validateCompletedQuery;
 module.exports.idsToObjectIds = idsToObjectIds;
 module.exports.addTodo = addTodo;
 module.exports.getTodos = getTodos;
