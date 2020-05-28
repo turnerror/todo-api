@@ -2,7 +2,7 @@ const express = require('express');
 const routes = require('./Config/routes');
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // enable CORS
 app.use(function(req, res, next) {
