@@ -24,7 +24,7 @@ async function postTodos(req, res) {
     const db = await DbService.connectToDB();
     const query = await TodosService.database.addTodo(db, body.task);
 
-    return res.json({success: query.insertedCount === 1});
+    return res.json({success: query.insertedCount === 1, data: query.ops[0]});
 }
 
 async function putTodo(req, res) {
