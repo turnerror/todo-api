@@ -1,13 +1,11 @@
-function validateIds(ids) {
+function validateId(id) {
     const regex = /[0-9a-f]{24}/;
     let check = true;
 
-    ids.forEach(id => {
-        if (!(regex.test(id))) {
-            check = false;
-            return false;
-        }
-    });
+    if (!(regex.test(id))) {
+        check = false;
+        return false;
+    }
 
     return check;
 }
@@ -21,5 +19,5 @@ function validateCompletedQuery(completed) {
     return check;
 }
 
-module.exports.validateIds = validateIds;
+module.exports.validateId = validateId;
 module.exports.validateCompletedQuery = validateCompletedQuery;

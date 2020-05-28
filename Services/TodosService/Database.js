@@ -1,3 +1,5 @@
+const ObjectId = require('mongodb').ObjectId;
+
 function addTodo(db, newTask) {
     let collection = db.collection('Todos');
     return collection.insertOne({"task" : newTask});
@@ -8,17 +10,17 @@ function getTodos(db, completed) {
     return collection.find({completed: {$exists: completed === '1'}, deleted: {$exists: false}}).toArray();
 }
 
-function completeTodos(db, obj_ids) {
+function completeTodo(db, id) {
     let collection = db.collection('Todos');
-    return collection.updateMany({_id: {$in: obj_ids}}, {$set: {completed: 1}});
+    return collection.updateOne({_id: ObjectId(id)}, {$set: {completed: 1}});
 }
 
-function deleteTodos(db, obj_ids) {
+function deleteTodo(db, id) {
     let collection = db.collection('Todos');
-    return collection.updateMany({_id: {$in: obj_ids}}, {$set: {deleted: 1}});
+    return collection.updateOne({_id: ObjectId(id)}, {$set: {deleted: 1}});
 }
 
 module.exports.addTodo = addTodo;
 module.exports.getTodos = getTodos;
-module.exports.completeTodos = completeTodos;
-module.exports.deleteTodos = deleteTodos;
+module.exports.completeTodo = completeTodo;
+module.exports.deleteTodo = deleteTodo;

@@ -27,30 +27,28 @@ async function postTodos(req, res) {
     return res.json({success: query.insertedCount === 1});
 }
 
-async function putTodos(req, res) {
-    const body = req.body;
+async function putTodo(req, res) {
+    const id = req.params.id;
 
-    if (!TodosService.validation.validateIds(body.ids)) {
+    if (!TodosService.validation.validateId(id)) {
         return res.status(400).send('Bad Request');
     }
 
-    const obj_ids = TodosService.utilities.idsToObjectIds(body.ids);
     const db = await DbService.connectToDB();
-    const query = await TodosService.database.completeTodos(db, obj_ids);
+    const query = await TodosService.database.completeTodo(db, id);
 
     return res.json({success: query.result.n > 0});
 }
 
-async function deleteTodos(req, res) {
-    const body = req.body;
+async function deleteTodo(req, res) {
+    const id = req.params.id;
 
-    if (!TodosService.validation.validateIds(body.ids)) {
+    if (!TodosService.validation.validateId(id)) {
         return res.status(400).send('Bad Request');
     }
 
-    const obj_ids = TodosService.utilities.idsToObjectIds(body.ids);
     const db = await DbService.connectToDB();
-    const query = await TodosService.database.deleteTodos(db, obj_ids);
+    const query = await TodosService.database.deleteTodo(db, id);
 
     return res.json({success: query.result.n > 0});
 }
@@ -58,5 +56,5 @@ async function deleteTodos(req, res) {
 
 module.exports.getTodos = getTodos;
 module.exports.postTodos = postTodos;
-module.exports.putTodos = putTodos;
-module.exports.deleteTodos = deleteTodos;
+module.exports.putTodo = putTodo;
+module.exports.deleteTodo = deleteTodo;

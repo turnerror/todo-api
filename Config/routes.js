@@ -8,9 +8,9 @@ function routes(app) {
 
     app.post('/todos', jsonParser, TodosController.postTodos);
 
-    app.put('/todos', jsonParser, TodosController.putTodos);
+    app.put('/todo/:id', jsonParser, TodosController.putTodo);
 
-    app.delete('/todos', jsonParser, TodosController.deleteTodos);
+    app.delete('/todo/:id', jsonParser, TodosController.deleteTodo);
 }
 
 module.exports = routes;
