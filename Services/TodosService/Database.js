@@ -1,32 +1,3 @@
-const ObjectId = require('mongodb').ObjectId;
-
-function validateIds(ids) {
-    const regex = /[0-9a-f]{24}/;
-    let check = true;
-
-    ids.forEach(id => {
-        if (!(regex.test(id))) {
-            check = false;
-            return false;
-        }
-    });
-
-    return check;
-}
-
-function validateCompletedQuery(completed) {
-    let check = true;
-    if (completed && completed !== '1'){
-        check = false;
-    }
-
-    return check;
-}
-
-function idsToObjectIds(ids){
-    return ids.map(id => ObjectId(id));
-}
-
 function addTodo(db, newTask) {
     let collection = db.collection('Todos');
     return collection.insertOne({"task" : newTask});
@@ -47,9 +18,6 @@ function deleteTodos(db, obj_ids) {
     return collection.updateMany({_id: {$in: obj_ids}}, {$set: {deleted: 1}});
 }
 
-module.exports.validateIds = validateIds;
-module.exports.validateCompletedQuery = validateCompletedQuery;
-module.exports.idsToObjectIds = idsToObjectIds;
 module.exports.addTodo = addTodo;
 module.exports.getTodos = getTodos;
 module.exports.completeTodos = completeTodos;
