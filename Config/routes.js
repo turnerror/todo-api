@@ -8,6 +8,8 @@ function routes(app) {
 
     app.post('/todos', jsonParser, TodosController.postTodos);
 
+    app.get('/todo/:id', TodosController.getTodo);
+
     app.put('/todo/:id', jsonParser, TodosController.putTodo);
 
     app.delete('/todo/:id', jsonParser, TodosController.deleteTodo);

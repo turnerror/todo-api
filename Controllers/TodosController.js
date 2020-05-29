@@ -27,6 +27,18 @@ async function postTodos(req, res) {
     return res.json({success: query.insertedCount === 1, data: query.ops[0]});
 }
 
+async function getTodo(req, res) {
+    const id = req.params.id;
+
+    if (!TodosService.validation.validateId(id)) {
+        return res.status(400).send('Bad Request');
+    }
+    const db = await DbService.connectToDB();
+    const data = await TodosService.database.getTodo(db, id);
+
+    return res.json({success: (data != null), data: data});
+}
+
 async function putTodo(req, res) {
     const id = req.params.id;
 
@@ -56,5 +68,6 @@ async function deleteTodo(req, res) {
 
 module.exports.getTodos = getTodos;
 module.exports.postTodos = postTodos;
+module.exports.getTodo = getTodo;
 module.exports.putTodo = putTodo;
 module.exports.deleteTodo = deleteTodo;
