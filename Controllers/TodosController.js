@@ -41,13 +41,19 @@ async function getTodo(req, res) {
 
 async function putTodo(req, res) {
     const id = req.params.id;
+    const todo = req.body.todo;
 
     if (!TodosService.validation.validateId(id)) {
         return res.status(400).send('Bad Request');
     }
 
     const db = await DbService.connectToDB();
-    const query = await TodosService.database.completeTodo(db, id);
+    let query;
+    if (todo){
+        query = await TodosService.database.editTodo(db, todo);
+    } else {
+        query = await TodosService.database.completeTodo(db, id);
+    }
 
     return res.json({success: query.result.n > 0});
 }

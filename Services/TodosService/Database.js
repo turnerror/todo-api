@@ -20,6 +20,11 @@ function completeTodo(db, id) {
     return collection.updateOne({_id: ObjectId(id)}, {$set: {completed: 1}});
 }
 
+function editTodo(db, todo) {
+    let collection = db.collection('Todos');
+    return collection.updateOne({_id: ObjectId(todo._id)},{$set: {task: todo.task}});
+}
+
 function deleteTodo(db, id) {
     let collection = db.collection('Todos');
     return collection.updateOne({_id: ObjectId(id)}, {$set: {deleted: 1}});
@@ -29,4 +34,5 @@ module.exports.addTodo = addTodo;
 module.exports.getTodos = getTodos;
 module.exports.getTodo = getTodo;
 module.exports.completeTodo = completeTodo;
+module.exports.editTodo = editTodo;
 module.exports.deleteTodo = deleteTodo;
