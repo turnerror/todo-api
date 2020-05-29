@@ -11,7 +11,7 @@ async function getTodos(req, res) {
     const db = await DbService.connectToDB();
     const data = await TodosService.database.getTodos(db, completed);
 
-    return res.json({success: data.length > 0, data: data});
+    return res.json({success: (data != null), data: data});
 }
 
 async function postTodos(req, res) {
